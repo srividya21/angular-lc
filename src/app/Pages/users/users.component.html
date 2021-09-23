@@ -17,13 +17,13 @@
         <div class="col-sm-12 search-hero mb-3 mid-y py-3 px-0 d-flex bg-light">
             <div class="input-group">
                 <input type="text" class="form-control col-4" #filter placeholder="Search"
-                    (keyup)="applyFilter($event)"/>
+                    (keyup)="applyFilter($event)" />
                 <span class="input-group-text">
                     <mat-icon>search</mat-icon>
                 </span>
             </div>
         </div>
-          
+
         <div>
             <div>
                 <mat-icon>
@@ -35,15 +35,16 @@
                         <input type="checkbox" [(ngModel)]="a.checked" />
                         <span>{{a.name}}</span>
                     </label>
-                
-                    <button class="btn btn-sm btn btn-outline-warning" (click)="showDropDown=!showDropDown">Cancel</button>
-                    <button class="btn btn-sm btn btn-warning" (change)="filterChange(filter,$event)">Apply</button>
+
+                    <button class="btn btn-sm btn btn-outline-warning mr-2"
+                        (click)="showDropDown=!showDropDown">Cancel</button>
+                    <button class="btn btn-sm btn btn-warning">Apply</button>
                 </div>
             </div>
 
         </div>
         <div class="table-responsive">
-            <table  mat-table [dataSource]="dataSource" matSort class="" style="white-space: nowrap;width: 100%;">
+            <table mat-table [dataSource]="dataSource" matSort class="" style="white-space: nowrap;width: 100%;">
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
                     <td mat-cell *matCellDef="let element">{{element.name}}</td>
@@ -51,21 +52,36 @@
 
                 <ng-container matColumnDef="platform">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Paltform</th>
-                    <td mat-cell *matCellDef="let element"><span> <mat-icon style="color: rgb(235, 16, 89);">camera_alt</mat-icon></span> </td>
+                    <td mat-cell *matCellDef="let element"><span>
+                            <mat-icon style="color: rgb(235, 16, 89);">camera_alt</mat-icon>
+                        </span> </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dob">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</th>
-                    <td mat-cell *matCellDef="let element">{{element.dateofBirth}} </td>
+                    <td mat-cell *matCellDef="let element">
+                        <p>
+                            <ng-container *ngIf="dob">
+                            </ng-container>
+                            {{element.dateofBirth}}
+                        </p>
+                    </td>
                 </ng-container>
 
                 <ng-container matColumnDef="gender">
-                    
-                    <th mat-header-cell *matHeaderCellDef >Gender</th>
-                    <td mat-cell *matCellDef="let element"> 
-       
+
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-label>Gender</mat-label>
+                        <mat-select (selectionChange)="genderChange($event.value)">
+                            <mat-option *ngFor="let gen of genderList" [value]="gen">
+                                {{gen.name}}
+                            </mat-option>
+                        </mat-select>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.gender == 1 ? 'Male' : 'Female' }}
                     </td>
-                    
+
                 </ng-container>
 
                 <ng-container matColumnDef="age">
@@ -90,19 +106,20 @@
 
                 <ng-container matColumnDef="menu">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Menu</th>
-                    <td mat-cell *matCellDef="let element"><span [matMenuTriggerFor]="menuUserPhoto" class="user-photo__btn" #t="matMenuTrigger" [class.opened]="t.menuOpen">...</span> </td>
+                    <td mat-cell *matCellDef="let element"><span [matMenuTriggerFor]="menuUserPhoto"
+                            class="user-photo__btn" #t="matMenuTrigger" [class.opened]="t.menuOpen">...</span> </td>
                     <mat-menu #menuUserPhoto="matMenu">
                         <button mat-menu-item>
-                          <mat-icon style="color: rgb(248, 233, 17);">get_app</mat-icon>
-                                <span style="color: rgb(248, 233, 17);">Export</span>
-                              </button>
+                            <mat-icon style="color: rgb(248, 233, 17);">get_app</mat-icon>
+                            <span style="color: rgb(248, 233, 17);">Export</span>
+                        </button>
                         <button mat-menu-item>
-                          <mat-icon style="color: rgb(248, 233, 17);">publish</mat-icon>
-                                <span style="color: rgb(248, 233, 17);">Archive</span>
-                              </button>
+                            <mat-icon style="color: rgb(248, 233, 17);">publish</mat-icon>
+                            <span style="color: rgb(248, 233, 17);">Archive</span>
+                        </button>
                     </mat-menu>
                 </ng-container>
-    
+
                 <ng-container matColumnDef="noData">
                     <mat-footer-cell *matFooterCellDef colspan="5">
                         <p style="width: 100%;text-align: center; position: absolute;">
@@ -123,9 +140,7 @@
                     [ngClass]="{'hidenoData':!(dataSource.data.length==0 || dataSource.filteredData.length == 0)}">
                 </mat-footer-row>
             </table>
-          
+
         </div>
     </div>
-    
 </div>
-

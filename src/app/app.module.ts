@@ -25,6 +25,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TablefilterPipe } from './pipe/tablefilter.pipe';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -61,6 +62,7 @@ const routes: Routes = [
     MatSortModule,
     ReactiveFormsModule,
     MatPaginatorModule,
+    MatSelectModule,
     ModalModule.forRoot()
  
   ],

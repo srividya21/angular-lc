@@ -1,8 +1,5 @@
-import { HIGH_CONTRAST_MODE_ACTIVE_CSS_CLASS } from '@angular/cdk/a11y/high-contrast-mode/high-contrast-mode-detector';
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { MatFormFieldControl } from '@angular/material/form-field';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -13,106 +10,79 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 
 
 export class UsersComponent implements OnInit {
-  @ViewChild('bankDetailsModel', { static: false }) bankDetailsModel: TemplateRef<any>;
-  list:any[]; 
-    
-  @Output() shareCheckedList = new EventEmitter();
-  @Output() shareIndividualCheckedList = new EventEmitter();
-  
+  public list: any[];
+
+   shareCheckedList = new EventEmitter();
+   shareIndividualCheckedList = new EventEmitter();
+
   displayedColumns: string[] = ['name', 'platform', 'dob', 'gender', 'age', 'degree', 'percentage', 'yearofpass', 'menu'];
   dataSource = new MatTableDataSource();
   public preview: string;
-  checkedList : any[];
-  currentSelected : {};
-  public showDropDown:boolean = false;
-  shopMenu:boolean = false;
-  gender: string;
-  filterValues = {};
-  public config = {
-    keyboard: true,
-    ignoreBackdropClick: true,
-    class: 'modal-md modal-dialog-centered',
-  };
+  public checkedList: any[];
+  public currentSelected: {};
+  public showDropDown: boolean = false;
+  public filterValues = {};
 
+  public genderList: Array<any> = [
+    { name: 'Male', id: 1 },
+    { name: 'Female', id: 2 }
+  ]
 
+  public rowData: Array<any> = [
+    { name: '#Name_2', paltform: '', dateofBirth: '20 Aug 1996', gender: 1, age: '25', degree: 'BCA', percentage: '9.90%', yearofpass: '2015', menu: '...' },
+    { name: '#Name_3', paltform: '', dateofBirth: '21 oct 1994', gender: 1, age: '28', degree: 'BSC', percentage: '9.80%', yearofpass: '2016', menu: '...' },
+    { name: '#Name_4', paltform: '', dateofBirth: '25 jun 1990', gender: 2, age: '27', degree: 'BE', percentage: '9.70%', yearofpass: '2017', menu: '...' },
+    { name: '#Name_5', paltform: '', dateofBirth: '26 sep 1996', gender: 1, age: '23', degree: 'ME', percentage: '9.77%', yearofpass: '2018', menu: '...' },
+    { name: '#Name_5', paltform: '', dateofBirth: '27 Aug 1995', gender: 2, age: '23', degree: 'MSC', percentage: '9.87%', yearofpass: '2020', menu: '...' }
+  ]
 
-  constructor( private modalService: BsModalService) { 
-  
+  constructor() {
     this.checkedList = [];
-    this.list = 
+    this.list =
       [
-        {name :'Name',checked : false},
-        {name :'Platform',checked : false},
-        {name :'Date of Birth',checked : false},
-        {name :'Gender',checked : false},
-        {name :'Age',checked : false},
-        {name :'Degree',checked : false},
-        {name :'Percentage',checked : false},
-        {name :'Year of Pass',checked : false}
+        { name: 'Name', checked: false },
+        { name: 'Platform', checked: false },
+        { name: 'Date of Birth', checked: false },
+        { name: 'Gender', checked: false },
+        { name: 'Age', checked: false },
+        { name: 'Degree', checked: false },
+        { name: 'Percentage', checked: false },
+        { name: 'Year of Pass', checked: false }
       ]
-    
   }
 
-  ngOnInit(){
-    this.dataSource = new MatTableDataSource( [
-      {name :'#Name_1',paltform : 'yes', dateofBirth: '20 Aug 2021', gender: '', age: '21', degree: 'MCA',percentage:'9.99%',yearofpass:'2014',menu:'...'},
-      {name :'#Name_2',paltform : 'yes', dateofBirth: '20 Aug 2021', gender: '', age: '25', degree: 'BCA',percentage:'9.90%',yearofpass:'2015',menu:'...'},
-      {name :'#Name_3',paltform : 'yes', dateofBirth: '20 Aug 2021', gender: '', age: '28', degree: 'BSC',percentage:'9.80%',yearofpass:'2016',menu:'...'},
-      {name :'#Name_4',paltform : 'yes', dateofBirth: '20 Aug 2021', gender: '', age: '27', degree: 'BE',percentage:'9.70%',yearofpass:'2017',menu:'...'},
-      {name :'#Name_5',paltform : 'yes', dateofBirth: '20 Aug 2021', gender: '', age: '23', degree: 'ME',percentage:'9.77%',yearofpass:'2018',menu:'...'}
-
-    ]);
-   
+  ngOnInit() {
+    this.dataSource = new MatTableDataSource(this.rowData);
   }
 
- 
-
-  filterChange(filter, event) {
-    //let filterValues = {}
-    this.filterValues[
-      filter.list
-    ] = event.target.value.trim().toLowerCase();
-    this.dataSource.filter = JSON.stringify(this.filterValues);
+  genderChange(value) {
+    this.dataSource = new MatTableDataSource(this.rowData.filter(i => i.gender == value.id));
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    
   }
 
-  getSelectedValue(status:Boolean,value:String){
-    if(status){
-      this.checkedList.push(value);  
-    }else{
-        var index = this.checkedList.indexOf(value);
-        this.checkedList.splice(index,1);
+  getSelectedValue(status: Boolean, value: String) {
+    if (status) {
+      this.checkedList.push(value);
+    } else {
+      var index = this.checkedList.indexOf(value);
+      this.checkedList.splice(index, 1);
     }
-    
-    this.currentSelected = {checked : status,name:value};
-
-    //share checked list
-    this.shareCheckedlist();
-    
-    //share individual selected item
+    this.currentSelected = { checked: status, name: value };  
+    this.shareCheckedlist();  
     this.shareIndividualStatus();
-}
+  }
 
-shareCheckedlist(){
-  this.shareCheckedList.emit(this.checkedList);
-}
-shareIndividualStatus(){
- this.shareIndividualCheckedList.emit(this.currentSelected);
-}
-  
-users: any[] = [
-  { name: 'Kristy', gender: 'female' },
-  { name: 'Nick', gender: 'male'  },
-  { name: 'Ariana', gender: 'female' },
-  { name: 'Joe', gender: 'male' },
-  { name: 'Albert', gender: 'male' },
-];
+  shareCheckedlist() {
+    this.shareCheckedList.emit(this.checkedList);
+  }
+  shareIndividualStatus() {
+    this.shareIndividualCheckedList.emit(this.currentSelected);
+  }
+
 
 
 }

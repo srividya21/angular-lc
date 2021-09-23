@@ -78,3 +78,15 @@ table {
     font-size: 14px;
     width: 100%;
   }
+
+
+.mat-select {
+    display: inline-block;
+    width: auto;
+    outline: none;
+   
+}
+
+.mat-menu-item{
+    height: 38px !important;
+}
