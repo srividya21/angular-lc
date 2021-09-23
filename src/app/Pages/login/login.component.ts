@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
         alert("Please enter the details");
         return true;
       }
-      if(this.username == 'admin' && this.password == 'admin'){
+      if(this.username == 'admin@gmail.com' && this.password == 'admin'){
        this.router.navigate(["user"]);
       }else {
         alert("Invalid credentials");

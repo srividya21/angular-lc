@@ -24,7 +24,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TablefilterPipe } from './pipe/tablefilter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 
 
@@ -38,8 +37,7 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    UsersComponent,
-    TablefilterPipe
+    UsersComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
