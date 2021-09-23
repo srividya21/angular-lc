@@ -1,0 +1,131 @@
+<div class="d-flex justify-content-between px-3 align-items-center">
+    <div class="card-heading">
+        <span style="color: rgb(248, 233, 17);"><strong>Users</strong></span>
+    </div>
+    <div class="text-end">
+        <img src="assets/usrbig.jpg" class="img-radius" hight="25px" width="25px" />
+        <button mat-menu-item class="btn btn-outline-dark" [routerLink]="['/login']">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <!-- SEARCH -->
+        <div class="col-sm-12 search-hero mb-3 mid-y py-3 px-0 d-flex bg-light">
+            <div class="input-group">
+                <input type="text" class="form-control col-4" #filter placeholder="Search"
+                    (keyup)="applyFilter($event)"/>
+                <span class="input-group-text">
+                    <mat-icon>search</mat-icon>
+                </span>
+            </div>
+        </div>
+          
+        <div>
+            <div>
+                <mat-icon>
+                    <span class="drop-toggle btn flat" (click)="showDropDown=!showDropDown"
+                        *ngIf="checkedList.length<=0">settings</span>
+                </mat-icon>
+                <div class="drop-show" *ngIf="showDropDown">
+                    <label *ngFor="let a of list">
+                        <input type="checkbox" [(ngModel)]="a.checked" />
+                        <span>{{a.name}}</span>
+                    </label>
+                
+                    <button class="btn btn-sm btn btn-outline-warning" (click)="showDropDown=!showDropDown">Cancel</button>
+                    <button class="btn btn-sm btn btn-warning" (change)="filterChange(filter,$event)">Apply</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="table-responsive">
+            <table  mat-table [dataSource]="dataSource" matSort class="" style="white-space: nowrap;width: 100%;">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="platform">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Paltform</th>
+                    <td mat-cell *matCellDef="let element"><span> <mat-icon style="color: rgb(235, 16, 89);">camera_alt</mat-icon></span> </td>
+                </ng-container>
+
+                <ng-container matColumnDef="dob">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date of Birth</th>
+                    <td mat-cell *matCellDef="let element">{{element.dateofBirth}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="gender">
+                    
+                    <th mat-header-cell *matHeaderCellDef >Gender</th>
+                    <td mat-cell *matCellDef="let element"> 
+       
+                    </td>
+                    
+                </ng-container>
+
+                <ng-container matColumnDef="age">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Age</th>
+                    <td mat-cell *matCellDef="let element"> {{element.age}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="degree">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Degree</th>
+                    <td mat-cell *matCellDef="let element">{{element.degree}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="percentage">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Percentage</th>
+                    <td mat-cell *matCellDef="let element"> {{element.percentage}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="yearofpass">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Year of Pass</th>
+                    <td mat-cell *matCellDef="let element"> {{element.yearofpass}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="menu">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Menu</th>
+                    <td mat-cell *matCellDef="let element"><span [matMenuTriggerFor]="menuUserPhoto" class="user-photo__btn" #t="matMenuTrigger" [class.opened]="t.menuOpen">...</span> </td>
+                    <mat-menu #menuUserPhoto="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon style="color: rgb(248, 233, 17);">get_app</mat-icon>
+                                <span style="color: rgb(248, 233, 17);">Export</span>
+                              </button>
+                        <button mat-menu-item>
+                          <mat-icon style="color: rgb(248, 233, 17);">publish</mat-icon>
+                                <span style="color: rgb(248, 233, 17);">Archive</span>
+                              </button>
+                    </mat-menu>
+                </ng-container>
+    
+                <ng-container matColumnDef="noData">
+                    <mat-footer-cell *matFooterCellDef colspan="5">
+                        <p style="width: 100%;text-align: center; position: absolute;">
+                            {{ dataSource.data.length != 0 && dataSource.filteredData.length == 0 ? 'No result(s)
+                            found'
+                            : 'No data available' }}
+                        </p>
+                    </mat-footer-cell>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <mat-row *ngIf="dataSource.data.length == 0">
+                    {{ dataSource.data.length != 0 && dataSource.filteredData.length == 0 ? 'No result(s) found' :
+                    'No data available' }}
+                </mat-row>
+                <mat-footer-row *matFooterRowDef="['noData']"
+                    [ngClass]="{'hidenoData':!(dataSource.data.length==0 || dataSource.filteredData.length == 0)}">
+                </mat-footer-row>
+            </table>
+          
+        </div>
+    </div>
+    
+</div>
+
